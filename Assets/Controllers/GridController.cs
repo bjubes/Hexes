@@ -4,9 +4,9 @@ using System.Collections;
 public class GridController : MonoBehaviour {
 
 	public Grid grid;
-
+	public int width, height;
 	void OnEnable () {
-		grid = new Grid(4,6);
+		grid = new Grid(width,height);
 	}
 	
 	// Update is called once per frame
