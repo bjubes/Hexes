@@ -30,7 +30,6 @@ public class TileSpriteController : MonoBehaviour {
 			tileGameObjectMap.Add(t,tileGO);
 			t.OnTileStateChanged += TileStateChanged;
 
-
 			//create and register new UIText
 			GameObject tileText = (GameObject)Instantiate(TileUIText);
 			tileText.name = "Tile UI Text " + t.x + " " + t.y;
