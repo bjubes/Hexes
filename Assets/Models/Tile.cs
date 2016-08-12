@@ -6,6 +6,7 @@ public class Tile  {
 
 	public int x;
 	public int y;
+	public char letter = 'C';  //NOT IMPLEMENTED YET
 
 	public Tile (int x, int y) {
 		this.x = x;

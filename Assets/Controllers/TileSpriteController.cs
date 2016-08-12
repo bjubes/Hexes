@@ -1,26 +1,43 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System;
 
 public class TileSpriteController : MonoBehaviour {
 
+	public GameObject TileUIText;
 	public Sprite tileSprite;
 	public float xBorder = 0.2f;
 	public float yBorder = 0.05f; 
 	public float vertOffset = 0.47f;
 	public Dictionary<Tile,GameObject> tileGameObjectMap;
+	public Dictionary<Tile, Text> tileUITextmap;
 
 
 	void Start () {
+		Transform letterParent = GameObject.FindWithTag ("Letter UI Parent").transform;
+
 		tileGameObjectMap = new Dictionary<Tile, GameObject>();
+		tileUITextmap = new Dictionary<Tile, Text> ();
 
 		foreach( Tile t in Grid.Instance.GetAllTiles()) {
+			//create and register new game object
 			GameObject tileGO = new GameObject("Tile " + t.x + " " + t.y);
 			tileGO.AddComponent<SpriteRenderer>().sprite = tileSprite;
 			tileGO.transform.parent = this.transform;
 			tileGO.transform.position = HexPosFromTileCoords(t.x,t.y);
 			tileGameObjectMap.Add(t,tileGO);
+
+
+			//create and register new UIText
+			GameObject tileText = (GameObject)Instantiate(TileUIText);
+			tileText.name = "Tile UI Text " + t.x + " " + t.y;
+			Text UIText = tileText.GetComponent<Text> ();
+			UIText.text = t.letter.ToString();
+			tileText.transform.SetParent(letterParent,false);
+			tileText.GetComponent<UIFollowGameObject> ().objectToFollow = tileGO.transform;
+			tileUITextmap.Add(t,UIText);
 		}
 	}
 	
