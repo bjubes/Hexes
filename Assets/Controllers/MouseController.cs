@@ -52,4 +52,16 @@ public class MouseController : MonoBehaviour {
 
 		Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3f, 25f);
 	}
+
+	void DetectTileClicks() {
+		if (Input.GetMouseButtonUp (0)) {
+			print ("clicked");
+
+			Vector2 tilePos = tsp.TileCoordsFromHexPos (currMousePos);
+			Tile tile = Grid.Instance.GetTile ((int)tilePos.x, (int)tilePos.y);
+			if (tile != null) {
+				tile.CallOnTileClickedOnSelf ();
+			}
+		}
+	}
 }
