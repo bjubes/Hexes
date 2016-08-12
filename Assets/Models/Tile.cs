@@ -1,17 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
+public enum TileState {Neutral, Selected, Endangered, Taken};
 
 public class Tile  {
+	// the state of the tile
+	//						Neutral - Tile has no owner and has a letter on it
+	//						Selected - Tile was neutral but was tapped by a player during turn
+	//						Endangered - Tile is neighbor of a "Selected" tile(s) and its own
+	//									 state will be changed if the user inputs a valid word
+	//						Taken - Tile has an owner and has no words on it, only a pure color
+
+
+	public TileState tileState{ get; protected set;}
 
 	public int x;
 	public int y;
-	public char letter = 'C';  //NOT IMPLEMENTED YET
+	public char letter = 'C';  //  "\0" is unicode for "null"
 
 	public Tile (int x, int y) {
 		this.x = x;
 		this.y = y;
+		tileState = TileState.Neutral;
 	}
+
+	public Action<Tile> OnTileClicked;
+	public Action<Tile> OnTileStateChanged;
 
 	public Tile[] GetNeighbors() {
 		List<Tile> tiles = new List<Tile>();
@@ -40,5 +56,74 @@ public class Tile  {
 
 		return tiles.ToArray();
 
+	}
+
+	public void CallOnTileClickedOnSelf() {
+		if (OnTileClicked != null) {
+			OnTileClicked (this);
+		}
+	}
+
+	//returns whether set request suceeded
+	public bool SetTileState(TileState state) {
+		bool sucess;
+
+		switch (state) {
+			
+		case TileState.Selected:
+				//we can only be selected if we were previously neutral
+			if (tileState != TileState.Neutral) {
+				sucess = false;
+			} else {
+				//we can be selected, so change the tile state
+				tileState = TileState.Selected;
+
+				//tell neighbors to check if they are now endangered.
+				sucess = true;
+			}
+			break;
+		
+		case TileState.Neutral:
+			if (tileState == TileState.Taken) {
+				//a tile cannot be taken, it would have to previously be endangered...
+				//so this is clearly wrong
+				Debug.LogError ("Tile in 'Taken' State is being set to neutral");
+				sucess = false;
+
+			} else {
+				tileState = TileState.Neutral;
+				//some neighbors may have to be alerted that they are no longer in danger
+
+				sucess = true;
+			}
+			break;
+
+		default:
+			Debug.LogError ("State Invalid");
+			sucess = false;
+			break;
+		}
+
+
+		if (sucess) {
+			OnTileStateChanged (this);
+		}
+		return sucess;
+	}
+
+	//tile sees if it is in danger of being unclaimed. i.e. will set endangered if it has a neighbor that is
+		//selected and touching the blob of an enemy color
+	public void CheckIfEndangered() {
+		throw new NotImplementedException ();
+	}
+
+	//will turn neighbors who are taken by the enemy into neutral tiles
+	public void PushBackNeighbors() {
+		throw new NotImplementedException ();
+	}
+
+	//returns whether this tile is touching a tile of the team given
+	public bool IsTouchingTileOfTeam(GameManager.Team team) {
+		throw new NotImplementedException ();
 	}
 }

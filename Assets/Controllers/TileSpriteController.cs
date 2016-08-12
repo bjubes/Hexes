@@ -28,6 +28,7 @@ public class TileSpriteController : MonoBehaviour {
 			tileGO.transform.parent = this.transform;
 			tileGO.transform.position = HexPosFromTileCoords(t.x,t.y);
 			tileGameObjectMap.Add(t,tileGO);
+			t.OnTileStateChanged += TileStateChanged;
 
 
 			//create and register new UIText
@@ -41,8 +42,15 @@ public class TileSpriteController : MonoBehaviour {
 		}
 	}
 	
-	void Update () {
-	
+	void TileStateChanged (Tile t) {
+		if (t.tileState == TileState.Selected) {
+			//set the sprite to be selected
+			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = Color.grey;
+		}
+		if (t.tileState == TileState.Neutral) {
+			//set the sprite to be selected
+			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = Color.white;
+		}
 	}
 
 	public Vector2 HexPosFromTileCoords(int x, int y) {
@@ -80,13 +88,18 @@ public class TileSpriteController : MonoBehaviour {
 		}
 
 		//now solve for y in the same manner as x
-		for (int tryY = 0; tryY < Grid.Instance.Width; tryY++) {
+		for (int tryY = 0; tryY < Grid.Instance.Height; tryY++) {
 			float thisGuess = Mathf.Abs(tryY - (tryY * yBorder)  - pos.y);
 			if( thisGuess < yGuessDiff) {
 				closestY = tryY;
 				yGuessDiff = thisGuess;
 
 			}
+		}
+
+		if (yGuessDiff + xGuessDiff > 0.7f) {
+			//we have clicked too far away for this to be considered any tile at all
+			return Vector2.one * -1 ; //this is a symbol for "null"
 		}
 			
 		return new Vector2(closestX,closestY);

@@ -19,18 +19,19 @@ public class MouseController : MonoBehaviour {
 
 		MoveCameraUsingPan ();
 
-		//testing purposes
-		if (Input.GetMouseButtonUp(0) && debugging){
-			currMousePos = Camera.main.ScreenToWorldPoint( Input.mousePosition);
-			Vector2 tilePos = tsp.TileCoordsFromHexPos(currMousePos);
-			Tile tile = Grid.Instance.GetTile((int)tilePos.x, (int)tilePos.y);
-			Tile[] neighbors =tile.GetNeighbors();
-			foreach (Tile t in neighbors) {
-				tsp.tileGameObjectMap[t].gameObject.GetComponent<SpriteRenderer>().enabled = false;
-				//Debug.Log(tsp.tileGameObjectMap[t].gameObject.name);
-			}
-		}
-		//end testing code
+		DetectTileClicks ();
+//		//testing purposes
+//		if (Input.GetMouseButtonUp(0) && debugging){
+//			currMousePos = Camera.main.ScreenToWorldPoint( Input.mousePosition);
+//			Vector2 tilePos = tsp.TileCoordsFromHexPos(currMousePos);
+//			Tile tile = Grid.Instance.GetTile((int)tilePos.x, (int)tilePos.y);
+//			Tile[] neighbors =tile.GetNeighbors();
+//			foreach (Tile t in neighbors) {
+//				tsp.tileGameObjectMap[t].gameObject.GetComponent<SpriteRenderer>().enabled = false;
+//				//Debug.Log(tsp.tileGameObjectMap[t].gameObject.name);
+//			}
+//		}
+//		//end testing code
 
 	}
 
@@ -55,8 +56,6 @@ public class MouseController : MonoBehaviour {
 
 	void DetectTileClicks() {
 		if (Input.GetMouseButtonUp (0)) {
-			print ("clicked");
-
 			Vector2 tilePos = tsp.TileCoordsFromHexPos (currMousePos);
 			Tile tile = Grid.Instance.GetTile ((int)tilePos.x, (int)tilePos.y);
 			if (tile != null) {
