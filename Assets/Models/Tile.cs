@@ -3,16 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public enum TileState {Neutral, Selected, Endangered, Taken};
 
 public class Tile  {
-	// the state of the tile
-	//						Neutral - Tile has no owner and has a letter on it
-	//						Selected - Tile was neutral but was tapped by a player during turn
-	//						Endangered - Tile is neighbor of a "Selected" tile(s) and its own
-	//									 state will be changed if the user inputs a valid word
-	//						Taken - Tile has an owner and has no words on it, only a pure color
-
 
 	public TileState tileState{ get; protected set;}
 
@@ -123,7 +115,7 @@ public class Tile  {
 	}
 
 	//returns whether this tile is touching a tile of the team given
-	public bool IsTouchingTileOfTeam(GameManager.Team team) {
+	public bool IsTouchingTileOfTeam(GameManager team) {
 		throw new NotImplementedException ();
 	}
 }
