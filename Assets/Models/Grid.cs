@@ -34,10 +34,11 @@ public class Grid {
 	}
 
 	public Tile GetTile(int x, int y) {
-		if (x == -1 || y == -1) {
+		if (x < 0 || x == Width || y < 0 || y == Height) {
 			return null;
+		} else {
+			return tiles [x, y];
 		}
-		return tiles[x,y];
 	}
 
 	public Tile[] GetAllTiles() {

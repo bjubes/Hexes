@@ -7,4 +7,14 @@ public struct Team {
 	public string name;
 	public int startPosX;
 	public int startPosY;
+
+	public static bool operator ==(Team t1, Team t2) 
+	{
+	    return t1.Equals(t2);
+	}
+
+	public static bool operator !=(Team t1, Team t2) 
+	{
+	   return !t1.Equals(t2);
+	}
 }
