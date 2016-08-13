@@ -52,6 +52,7 @@ public class TileSpriteController : MonoBehaviour {
 		}
 		else if (t.tileState == TileState.Taken) {
 			//set the sprite to be selected
+			tileUITextmap[t].text = t.letter.ToString();
 			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = t.team.color;
 		}
 	}

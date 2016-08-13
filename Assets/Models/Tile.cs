@@ -101,6 +101,7 @@ public class Tile  {
 				success = false;
 			} else {
 				tileState = TileState.Taken;
+				letter = '\0';
 				//tell our neighbors that they should be seeing if they have to change state as well
 				//i.e. a taken neighbor of the other color has to now become neutral.
 				success = true;
