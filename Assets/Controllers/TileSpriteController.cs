@@ -49,6 +49,8 @@ public class TileSpriteController : MonoBehaviour {
 		else if (t.tileState == TileState.Neutral) {
 			//set the sprite to be selected
 			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = Color.white;
+			tileUITextmap[t].text = t.letter.ToString();
+
 		}
 		else if (t.tileState == TileState.Taken) {
 			//set the sprite to be selected

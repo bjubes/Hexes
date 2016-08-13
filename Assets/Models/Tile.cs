@@ -19,7 +19,7 @@ public class Tile  {
 		this.y = y;
 		tileState = TileState.Empty;
 
-		letter = (char)UnityEngine.Random.Range (65, 91);  //a to z in ascii
+		//letter = (char)UnityEngine.Random.Range (65, 91);  //a to z in ascii
 	}
 
 	public Action<Tile> OnTileClicked;
@@ -103,6 +103,14 @@ public class Tile  {
 				letter = '\0';
 				//tell our neighbors that they should be seeing if they have to change state as well
 				//i.e. a taken neighbor of the other color has to now become neutral.
+
+				//tell neighbors that if they are empty, they now must become neutral
+				foreach(Tile t in GetNeighbors()){
+					if (t.tileState == TileState.Empty) {
+						t.SetTileState (TileState.Neutral);
+					}	
+				}
+
 				success = true;
 			}
 			break;
@@ -150,4 +158,5 @@ public class Tile  {
 		letter = (char)UnityEngine.Random.Range (65, 91);  //a to z in ascii
 
 	}
+
 }

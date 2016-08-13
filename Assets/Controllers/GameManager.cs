@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
 	//the starting positons for each team
 
 	public Team[] teams; //set in inspector
-	Team turn; //which player is currently going
+	int turn; //which player is currently going as index of teams array.
 
 	string _word;
 	public string Word {
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 	List<Tile> selectedTiles = new List<Tile>();
 
 	void Start () {
-		turn = teams [0];
+		turn = 0;
 		foreach (Tile t in Grid.Instance.GetAllTiles()) {
 			t.OnTileClicked += OnTileClicked;
 		}
