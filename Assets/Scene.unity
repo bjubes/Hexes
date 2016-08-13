@@ -206,7 +206,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 549061385}
+      - m_Target: {fileID: 0}
         m_MethodName: OnDeletePressed
         m_Mode: 1
         m_Arguments:
@@ -440,8 +440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71ae7a4c25d634194a1b96346c2208d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 4
-  height: 6
+  width: 8
+  height: 7
 --- !u!4 &438060228
 Transform:
   m_ObjectHideFlags: 0
@@ -449,7 +449,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 438060226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 143, y: 463, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -525,12 +525,16 @@ MonoBehaviour:
   teams:
   - color:
       serializedVersion: 2
-      rgba: 1184507
-    name: Red
+      rgba: 4293132288
+    name: 
+    startPosX: 1
+    startPosY: 5
   - color:
       serializedVersion: 2
-      rgba: 13004909
-    name: Blue
+      rgba: 4283782610
+    name: 
+    startPosX: 6
+    startPosY: 1
   wordText: {fileID: 1735942520}
 --- !u!4 &549061386
 Transform:
@@ -584,7 +588,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 611246454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 143, y: 463, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -822,7 +826,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 549061385}
+      - m_Target: {fileID: 0}
         m_MethodName: SendMessage
         m_Mode: 5
         m_Arguments:

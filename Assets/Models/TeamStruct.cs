@@ -5,5 +5,6 @@ using System.Collections;
 public struct Team {
 	public Color32 color;
 	public string name;
-	public Vector2 startPos;
+	public int startPosX;
+	public int startPosY;
 }
