@@ -15,7 +15,7 @@ public class TileSpriteController : MonoBehaviour {
 	public Dictionary<Tile, Text> tileUITextmap;
 
 
-	void Start () {
+	void OnEnable () {
 		Transform letterParent = GameObject.FindWithTag ("Letter UI Parent").transform;
 
 		tileGameObjectMap = new Dictionary<Tile, GameObject>();
@@ -46,9 +46,13 @@ public class TileSpriteController : MonoBehaviour {
 			//set the sprite to be selected
 			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = Color.grey;
 		}
-		if (t.tileState == TileState.Neutral) {
+		else if (t.tileState == TileState.Neutral) {
 			//set the sprite to be selected
 			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = Color.white;
+		}
+		else if (t.tileState == TileState.Taken) {
+			//set the sprite to be selected
+			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = t.team.color;
 		}
 	}
 

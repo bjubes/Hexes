@@ -12,6 +12,8 @@ public class Tile  {
 	public int y;
 	public char letter = 'C';  //  "\0" is unicode for "null"
 
+	public Team team;
+
 	public Tile (int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -57,21 +59,21 @@ public class Tile  {
 	}
 
 	//returns whether set request suceeded
-	public bool SetTileState(TileState state) {
-		bool sucess;
+	public bool SetTileState(TileState state, bool init = false) {
+		bool success;
 
 		switch (state) {
 			
 		case TileState.Selected:
 				//we can only be selected if we were previously neutral
 			if (tileState != TileState.Neutral) {
-				sucess = false;
+				success = false;
 			} else {
 				//we can be selected, so change the tile state
 				tileState = TileState.Selected;
 
 				//tell neighbors to check if they are now endangered.
-				sucess = true;
+				success = true;
 			}
 			break;
 		
@@ -80,27 +82,41 @@ public class Tile  {
 				//a tile cannot be taken, it would have to previously be endangered...
 				//so this is clearly wrong
 				Debug.LogError ("Tile in 'Taken' State is being set to neutral");
-				sucess = false;
+				success = false;
 
 			} else {
 				tileState = TileState.Neutral;
 				//some neighbors may have to be alerted that they are no longer in danger
 
-				sucess = true;
+				success = true;
 			}
 			break;
 
+		case TileState.Taken:
+			 if (tileState != TileState.Selected && init == false) {
+				//since we have not selected this tile, it should not be changing ownership.
+				Debug.LogError ("attempted to make tile 'taken' tile without selecting it first");
+				success = false;
+			} else {
+				tileState = TileState.Taken;
+				//tell our neighbors that they should be seeing if they have to change state as well
+				//i.e. a taken neighbor of the other color has to now become neutral.
+				success = true;
+			}
+			break;
+				
+
 		default:
 			Debug.LogError ("State Invalid");
-			sucess = false;
+			success = false;
 			break;
 		}
 
 
-		if (sucess) {
+		if (success && OnTileStateChanged != null) {
 			OnTileStateChanged (this);
 		}
-		return sucess;
+		return success;
 	}
 
 	//tile sees if it is in danger of being unclaimed. i.e. will set endangered if it has a neighbor that is
