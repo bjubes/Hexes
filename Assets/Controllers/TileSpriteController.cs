@@ -56,7 +56,7 @@ public class TileSpriteController : MonoBehaviour {
 		float yPos = y - (y* yBorder);
 		float xPos = x - (x* xBorder);
 		if (x % 2 == 0) {
-			yPos += vertOffset;
+			yPos -= vertOffset;
 		}
 
 		return new Vector2(xPos,yPos);
@@ -83,7 +83,7 @@ public class TileSpriteController : MonoBehaviour {
 
 		//now that x is known, see if we need to undo the vertOffset
 		if (closestX % 2 == 0) {
-			pos.y -= vertOffset;
+			pos.y += vertOffset;
 		}
 
 		//now solve for y in the same manner as x
