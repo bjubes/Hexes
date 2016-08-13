@@ -9,4 +9,4 @@ using System.Collections;
 //									 state will be changed if the user inputs a valid word
 //						Taken - Tile has an owner and has no words on it, only a pure color
 
-public enum TileState {Neutral, Selected, Endangered, Taken};
+public enum TileState {Empty, Neutral, Selected, Endangered, Taken};

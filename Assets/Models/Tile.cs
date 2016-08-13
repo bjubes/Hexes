@@ -17,7 +17,7 @@ public class Tile  {
 	public Tile (int x, int y) {
 		this.x = x;
 		this.y = y;
-		tileState = TileState.Neutral;
+		tileState = TileState.Empty;
 
 		letter = (char)UnityEngine.Random.Range (65, 91);  //a to z in ascii
 	}
@@ -62,14 +62,13 @@ public class Tile  {
 
 	//returns whether set request suceeded
 	public bool SetTileState(TileState state, bool init = false) {
-		bool success;
+		bool success = false;
 
 		switch (state) {
 			
 		case TileState.Selected:
 				//we can only be selected if we were previously neutral
 			if (tileState != TileState.Neutral) {
-				success = false;
 			} else {
 				//we can be selected, so change the tile state
 				tileState = TileState.Selected;
@@ -84,10 +83,10 @@ public class Tile  {
 				//a tile cannot be taken, it would have to previously be endangered...
 				//so this is clearly wrong
 				Debug.LogError ("Tile in 'Taken' State is being set to neutral");
-				success = false;
 
 			} else {
 				tileState = TileState.Neutral;
+				SetRandomLetter ();
 				//some neighbors may have to be alerted that they are no longer in danger
 
 				success = true;
@@ -98,7 +97,6 @@ public class Tile  {
 			 if (tileState != TileState.Selected && init == false) {
 				//since we have not selected this tile, it should not be changing ownership.
 				Debug.LogError ("attempted to make tile 'taken' tile without selecting it first");
-				success = false;
 			} else {
 				tileState = TileState.Taken;
 				letter = '\0';
@@ -108,10 +106,19 @@ public class Tile  {
 			}
 			break;
 				
+		case TileState.Empty:
+			if (!init) {
+				//cannot occour unless this is a refresh of the board
+				Debug.LogError ("Tile cannot be changed to empty");
+			} else {
+				letter = '\0';
+				tileState = TileState.Empty;
+				success = true;
+			}
+			break;
 
 		default:
 			Debug.LogError ("State Invalid");
-			success = false;
 			break;
 		}
 
@@ -136,5 +143,10 @@ public class Tile  {
 	//returns whether this tile is touching a tile of the team given
 	public bool IsTouchingTileOfTeam(GameManager team) {
 		throw new NotImplementedException ();
+	}
+
+	void SetRandomLetter() {
+		letter = (char)UnityEngine.Random.Range (65, 91);  //a to z in ascii
+
 	}
 }
