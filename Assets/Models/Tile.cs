@@ -10,7 +10,7 @@ public class Tile  {
 
 	public int x;
 	public int y;
-	public char letter = 'C';  //  "\0" is unicode for "null"
+	public char letter;  //  "\0" is unicode for "null"
 
 	public Team team;
 
@@ -18,6 +18,8 @@ public class Tile  {
 		this.x = x;
 		this.y = y;
 		tileState = TileState.Neutral;
+
+		letter = (char)UnityEngine.Random.Range (65, 91);  //a to z in ascii
 	}
 
 	public Action<Tile> OnTileClicked;
