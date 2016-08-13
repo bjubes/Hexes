@@ -169,7 +169,7 @@ public class Tile  {
 	}
 
 	void SetRandomLetter() {
-		letter = (char)UnityEngine.Random.Range (65, 91);  //a to z in ascii
+		letter = WordFrequency.GetRandomLetter ();
 
 	}
 

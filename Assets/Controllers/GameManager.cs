@@ -157,9 +157,8 @@ public class GameManager : MonoBehaviour {
 		end = length = fs.Length;
 		split = length / 2;
 		string lastLine = "";
+
 		//the dictionary file has 45333 lines
-		//log base 2 of 45333 is less than 16
-		//thus 17 will always get us an answer
 		while(true) {		
 
 			fs.Seek (split, SeekOrigin.Begin);
