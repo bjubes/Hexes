@@ -12,7 +12,31 @@ public class GameManager : MonoBehaviour {
 	//the starting positons for each team
 
 	public Team[] teams; //set in inspector
-	int turn; //which player is currently going as index of teams array.
+
+
+	int round;
+	int _turn;
+	int Turn {
+		get {
+			return _turn;
+		}
+		set { 
+			if (value !=_turn + 1) {
+				Debug.LogWarning ("Turn was incremented by more than one!");
+			}
+			if (value > teams.Length) {
+				round++;
+			}
+			_turn = value % teams.Length;
+			UpdateTurnIndicator ();
+		}
+	} //which player is currently going as index of teams array.
+
+	public Team currTeam {
+		get {
+			return teams[Turn];
+		}
+	}
 
 	string _word;
 	public string Word {
@@ -25,15 +49,17 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 	public Text wordText;
+	public Text turnText;
 
 	List<Tile> selectedTiles = new List<Tile>();
 
 	void Start () {
-		turn = 0;
+		Turn = 0;
 		foreach (Tile t in Grid.Instance.GetAllTiles()) {
 			t.OnTileClicked += OnTileClicked;
 		}
 		wordText.text = "";
+		UpdateTurnIndicator ();
 
 		foreach (Team team in teams) {
 			Tile tile = Grid.Instance.GetTile (team.startPosX, team.startPosY);
@@ -65,11 +91,47 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void OnSubmitPressed() {
-		throw new NotImplementedException ();	
+		//throw new NotImplementedException ();	
+		//if (IsWordValid(Word)) { //for now skip validation
+			TakeTilesInWord(selectedTiles);
+		foreach (Tile t in selectedTiles) {
+			t.SetTileState (TileState.Neutral, true);
+		}
+		//}
+
+		Turn++;
+		selectedTiles = new List<Tile> ();
+		Word = null;
 	}
 
+	void TakeTilesInWord (List<Tile> tiles) {
+		bool recurse = false;
+		List<Tile> takenTiles = new List<Tile> ();;
+		print ("working");
 
-	bool ValidateWord(string word) {
+		foreach (Tile t in tiles) {
+			if (t.IsTouchingTileOfTeam(currTeam)) {
+				takenTiles.Add (t);
+				recurse = true;
+			}
+		}
+
+		foreach (Tile t in takenTiles) {
+
+			print ("touching");
+			t.team = currTeam;
+			t.SetTileState(TileState.Taken);
+			tiles.Remove(t);
+		}
+
+		if (recurse) {
+			TakeTilesInWord(tiles);
+		}
+
+		selectedTiles = tiles;
+	}
+
+	bool IsWordValid(string word) {
 		word = word.ToUpper ();
 		long end;
 		long beg = 0;
@@ -108,6 +170,11 @@ public class GameManager : MonoBehaviour {
 			split = beg + ((end - beg) / 2);
 		}
 		return false;
+	}
+
+	void UpdateTurnIndicator() {
+		turnText.text = currTeam.name + "'s Turn!";
+		turnText.color = currTeam.color;
 	}
 }
 

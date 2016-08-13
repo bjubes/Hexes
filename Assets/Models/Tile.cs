@@ -17,7 +17,7 @@ public class Tile  {
 	public Tile (int x, int y) {
 		this.x = x;
 		this.y = y;
-		tileState = TileState.Empty;
+		SetTileState (TileState.Empty, true);
 
 		//letter = (char)UnityEngine.Random.Range (65, 91);  //a to z in ascii
 	}
@@ -61,7 +61,11 @@ public class Tile  {
 		}
 	}
 
-	//returns whether set request suceeded
+	/// <summary>
+	/// Sets the state of the tile.
+	/// </summary>
+	/// <returns><c>true</c>, if tile state was set, <c>false</c> otherwise.</returns>
+	/// <param name="init">overrides usual logic rules for cases where a tile should be regarded as "new"</param>
 	public bool SetTileState(TileState state, bool init = false) {
 		bool success = false;
 
@@ -86,10 +90,12 @@ public class Tile  {
 				Debug.LogError ("Tile in 'Taken' State is being set to neutral");
 
 			} else {
-				tileState = TileState.Neutral;
-				SetRandomLetter ();
+				if (tileState == TileState.Taken || tileState == TileState.Empty || init) {
+					SetRandomLetter ();
+				}
 				//some neighbors may have to be alerted that they are no longer in danger
-
+			
+				tileState = TileState.Neutral;
 				success = true;
 			}
 			break;
@@ -106,7 +112,7 @@ public class Tile  {
 
 				//tell neighbors that if they are empty, they now must become neutral
 				foreach(Tile t in GetNeighbors()){
-					if (t.tileState == TileState.Empty) {
+					if (t != null && t.tileState == TileState.Empty) {
 						t.SetTileState (TileState.Neutral);
 					}	
 				}
@@ -150,8 +156,16 @@ public class Tile  {
 	}
 
 	//returns whether this tile is touching a tile of the team given
-	public bool IsTouchingTileOfTeam(GameManager team) {
-		throw new NotImplementedException ();
+	public bool IsTouchingTileOfTeam(Team team) {
+		//throw new NotImplementedException ();
+		foreach(Tile t in GetNeighbors()) {
+			if (t != null) { //if this is an edge tile, some neighbors will be null
+				if (t.tileState == TileState.Taken && t.team == team) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	void SetRandomLetter() {
