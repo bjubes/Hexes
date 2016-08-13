@@ -79,29 +79,42 @@ public class GameManager : MonoBehaviour {
 
 		} else if (t.tileState == TileState.Selected) {// this tile was previously selected, so unselect it 
 			
-			int index = selectedTiles.IndexOf(t);
-			Word = Word.Remove (index, 1);
-			selectedTiles.Remove (t);
-			t.SetTileState (TileState.Neutral);
+			RemoveTileFromWord (t);
 		}
+	}
+
+	void RemoveTileFromWord(Tile t) {
+		int index = selectedTiles.IndexOf(t);
+		Word = Word.Remove (index, 1);
+		selectedTiles.Remove (t);
+		t.SetTileState (TileState.Neutral);
 	}
 
 	public void OnDeletePressed() {
-		throw new NotImplementedException ();	
+		RemoveTileFromWord (selectedTiles.Last());
 	}
 
-	public void OnSubmitPressed() {
-		//throw new NotImplementedException ();	
-		//if (IsWordValid(Word)) { //for now skip validation
-			TakeTilesInWord(selectedTiles);
-		foreach (Tile t in selectedTiles) {
-			t.SetTileState (TileState.Neutral, true);
-		}
-		//}
 
-		Turn++;
-		selectedTiles = new List<Tile> ();
-		Word = null;
+	public void OnSubmitPressed() {
+		ProcessTurn ();
+	}
+
+	public void ProcessTurn(bool pass = false) {
+		if (IsWordValid (Word)) { 
+			print ("valid turn!");
+			TakeTilesInWord (selectedTiles);
+			foreach (Tile t in selectedTiles) {
+				t.SetTileState (TileState.Neutral, true);
+			}
+		} 
+		if (IsWordValid (Word) || pass) {
+			Turn++;
+			selectedTiles = new List<Tile> ();
+			Word = null;
+		}
+		else {
+			//invalid word and we are not passing this turn
+		}
 	}
 
 	void TakeTilesInWord (List<Tile> tiles) {
@@ -139,22 +152,36 @@ public class GameManager : MonoBehaviour {
 		long split;
 
 		FileStream fs = new FileStream (Path.Combine (Application.streamingAssetsPath, "dictionary.txt"), FileMode.Open);
+		StreamReader sr = new StreamReader (fs);
+
 		end = length = fs.Length;
 		split = length / 2;
-
-		for (int i = 0; i < 100; i++) {
-			
-		
+		string lastLine = "";
+		//the dictionary file has 45333 lines
+		//log base 2 of 45333 is less than 16
+		//thus 17 will always get us an answer
+		while(true) {		
 
 			fs.Seek (split, SeekOrigin.Begin);
-//			print ((char)fs.ReadByte ());
-			StreamReader sr = new StreamReader (fs);
+			sr = new StreamReader (fs);
 			sr.ReadLine (); //read partial line
 
 			string line = sr.ReadLine ();
 			print (line);
+			//check for true condition
 			if (line == word) {
+				fs.Close ();
+				sr.Close ();
 				return true;
+			}
+
+			//check for false condition
+			if (line == lastLine) {
+				fs.Close ();
+				sr.Close ();
+				return false;
+			} else {
+				lastLine = line;
 			}
 
 			String[] a = { word, line };
@@ -169,6 +196,8 @@ public class GameManager : MonoBehaviour {
 
 			split = beg + ((end - beg) / 2);
 		}
+		fs.Close ();
+		sr.Close ();
 		return false;
 	}
 
