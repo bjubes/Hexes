@@ -6,17 +6,17 @@ public class MouseController : MonoBehaviour {
 	TileSpriteController tsp;
 
 	Vector2 lastMousePos, currMousePos;
-	const bool debugging = false;
+	const bool debugging = true;
 
 	void Start () {
 		tsp = GameObject.FindObjectOfType<TileSpriteController>();
 	}
 	
 	void Update () {
-
-		//set new mouse pos
+		//Dont do anything before setting new mouse pos
 		currMousePos = Camera.main.ScreenToWorldPoint( Input.mousePosition );
 
+		Dcommand ();
 		MoveCameraUsingPan ();
 
 		DetectTileClicks ();
@@ -56,11 +56,21 @@ public class MouseController : MonoBehaviour {
 
 	void DetectTileClicks() {
 		if (Input.GetMouseButtonUp (0)) {
-			Vector2 tilePos = tsp.TileCoordsFromHexPos (currMousePos);
-			Tile tile = Grid.Instance.GetTile ((int)tilePos.x, (int)tilePos.y);
+			Tile tile = GetTileUnderMouse ();
 			if (tile != null) {
 				tile.CallOnTileClickedOnSelf ();
 			}
+		}
+	}
+
+	Tile GetTileUnderMouse() {
+		Vector2 tilePos = tsp.TileCoordsFromHexPos (currMousePos);
+		return Grid.Instance.GetTile ((int)tilePos.x, (int)tilePos.y);
+	}
+
+	void Dcommand() {
+		if (debugging && Input.GetKeyDown(KeyCode.D)){
+			Debug.Log(GetTileUnderMouse().tileState);
 		}
 	}
 }
