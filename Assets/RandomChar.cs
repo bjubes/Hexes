@@ -50,7 +50,6 @@ public class RandomChar {
 	};
 
 	void InitRandomLettersMap() {
-		int count = 0;
 		string chars = "";
 		foreach (Letter letter in freqChart) {
 			for (int freq = 0; freq < letter.freq; freq++) {
