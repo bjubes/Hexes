@@ -29,14 +29,9 @@ public class GameManager : MonoBehaviour {
 			}
 			_turn = value % teams.Length;
 			UpdateTurnIndicator ();
+			UpdateCurrTeam ();
 		}
 	} //which player is currently going as index of teams array.
-
-	public Team currTeam {
-		get {
-			return teams[Turn];
-		}
-	}
 
 	string _word;
 	public string Word {
@@ -139,7 +134,7 @@ public class GameManager : MonoBehaviour {
 		print ("working");
 
 		foreach (Tile t in tiles) {
-			if (t.IsTouchingTileOfTeam(currTeam)) {
+			if (t.IsTouchingTileOfTeam(Grid.Instance.currTeam)) {
 				takenTiles.Add (t);
 				recurse = true;
 			}
@@ -148,7 +143,7 @@ public class GameManager : MonoBehaviour {
 		foreach (Tile t in takenTiles) {
 
 			print ("touching");
-			t.team = currTeam;
+			t.team = Grid.Instance.currTeam;
 			t.SetTileState(TileState.Taken);
 			tiles.Remove(t);
 		}
@@ -161,7 +156,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	bool IsWordValid(string word) {
-		//return true;
 		word = word.ToUpper ();
 		long end;
 		long beg = 0;
@@ -218,8 +212,13 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void UpdateTurnIndicator() {
-		turnText.text = currTeam.name + "'s Turn!";
-		turnText.color = currTeam.color;
+		turnText.text = Grid.Instance.currTeam.name + "'s Turn!";
+		turnText.color = Grid.Instance.currTeam.color;
+	}
+
+	void UpdateCurrTeam() {
+		Grid.Instance.currTeam = teams[Turn];
+			
 	}
 }
 

@@ -10,6 +10,7 @@ public class Grid {
 
 	public static Grid Instance;
 
+	public Team currTeam;  //set by GameManager
 	public RandomChar randomChar;
 
 	public Grid (int width, int height) {
