@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class WordFrequency {
+public class RandomChar {
 
 	public struct Letter{
 		public char l;
@@ -12,7 +12,13 @@ public static class WordFrequency {
 			this.freq = freq;
 		}
 	}
+
+	public RandomChar() {
+		InitRandomLettersMap();
+	}
+
 	const int total = 98;
+	char[] randomMap = new char[total];
 
 	static Letter[] freqChart = new Letter[] {
 		new Letter('A',9),
@@ -40,15 +46,21 @@ public static class WordFrequency {
 		new Letter('W',2),
 		new Letter('X',1),
 		new Letter('Y',2),
-		//new Letter('Z',1)
+		new Letter('Z',1)
 	};
 
-	public static char GetRandomLetter(){
+	void InitRandomLettersMap() {
+		int count = 0;
+		string chars = "";
 		foreach (Letter letter in freqChart) {
-			if (Random.Range (0, total) < letter.freq) {
-				return letter.l;
+			for (int freq = 0; freq < letter.freq; freq++) {
+				chars += letter.l.ToString();
 			}
 		}
-		return 'z';
+		randomMap = chars.ToCharArray();
+	}
+
+	public char GetRandomLetter(){
+		return randomMap[Random.Range (0, total)]; 
 	}
 }

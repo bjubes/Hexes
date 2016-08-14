@@ -10,6 +10,7 @@ public class Grid {
 
 	public static Grid Instance;
 
+	public RandomChar randomChar;
 
 	public Grid (int width, int height) {
 
@@ -29,7 +30,7 @@ public class Grid {
 				tiles[x,y] = new Tile(x,y);
 			}
 		}
-
+		randomChar = new RandomChar();
 		Debug.Log("created grid with " + width*height + " tiles.");
 	}
 

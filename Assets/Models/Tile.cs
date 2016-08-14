@@ -169,7 +169,7 @@ public class Tile  {
 	}
 
 	void SetRandomLetter() {
-		letter = WordFrequency.GetRandomLetter ();
+		letter = Grid.Instance.randomChar.GetRandomLetter ();
 
 	}
 
