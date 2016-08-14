@@ -53,6 +53,15 @@ public class GameManager : MonoBehaviour {
 
 	List<Tile> selectedTiles = new List<Tile>();
 
+	//grid stuff
+	public Grid grid;
+	public int width = 6;
+	public int  height = 8;
+
+	void OnEnable () {
+		grid = new Grid(width,height);
+	}
+
 	void Start () {
 		Turn = 0;
 		foreach (Tile t in Grid.Instance.GetAllTiles()) {
@@ -67,6 +76,13 @@ public class GameManager : MonoBehaviour {
 			tile.SetTileState (TileState.Taken, true);
 		}
 
+	}
+
+	//debug
+	void Update(){
+		if (Input.GetKeyDown(KeyCode.P)) {
+			OnSubmitPressed();
+		}
 	}
 
 	void OnTileClicked(Tile t) {
@@ -145,6 +161,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	bool IsWordValid(string word) {
+		//return true;
 		word = word.ToUpper ();
 		long end;
 		long beg = 0;
@@ -166,7 +183,7 @@ public class GameManager : MonoBehaviour {
 			sr.ReadLine (); //read partial line
 
 			string line = sr.ReadLine ();
-			print (line);
+			//print (line);
 			//check for true condition
 			if (line == word) {
 				fs.Close ();
