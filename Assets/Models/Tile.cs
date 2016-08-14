@@ -32,25 +32,24 @@ public class Tile  {
 		Grid g = Grid.Instance;
 
 		//add four direct neighbors
-		tiles.Add(g.GetTile(x,y+1));
-		tiles.Add(g.GetTile(x,y-1));
-		tiles.Add(g.GetTile(x+1,y));
-		tiles.Add(g.GetTile(x-1,y));
+		tiles.AddIfNotNull(g.GetTile(x,y+1));
+		tiles.AddIfNotNull(g.GetTile(x,y-1));
+		tiles.AddIfNotNull(g.GetTile(x+1,y));
+		tiles.AddIfNotNull(g.GetTile(x-1,y));
 
 		//get the two non-obvious neighbors. these two extra tiles are
 		//neighbors due to the visual offset from a hex grid effect.
 
 		if (x % 2 == 0) {
 			//the last two tiles are, in a square grid, diag down left and diag down right
-			tiles.Add(g.GetTile(x+1,y-1));
-			tiles.Add(g.GetTile(x-1,y-1));
+			tiles.AddIfNotNull(g.GetTile(x+1,y-1));
+			tiles.AddIfNotNull(g.GetTile(x-1,y-1));
 		} else {
 			//the last two tiles are, in a square grid, diag up left and diag up right
-			tiles.Add(g.GetTile(x+1,y+1));
-			tiles.Add(g.GetTile(x-1,y+1));
+			tiles.AddIfNotNull(g.GetTile(x+1,y+1));
+			tiles.AddIfNotNull(g.GetTile(x-1,y+1));
 
 		}
-
 		return tiles.ToArray();
 
 	}
@@ -112,7 +111,7 @@ public class Tile  {
 
 				//tell neighbors that if they are empty, they now must become neutral
 				foreach(Tile t in GetNeighbors()){
-					if (t != null && t.tileState == TileState.Empty) {
+					if (t.tileState == TileState.Empty) {
 						t.SetTileState (TileState.Neutral);
 					}	
 				}
