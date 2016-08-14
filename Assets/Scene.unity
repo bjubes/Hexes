@@ -497,7 +497,7 @@ MonoBehaviour:
       serializedVersion: 2
       rgba: 4292516757
     name: Blue
-    startPosX: 1
+    startPosX: 2
     startPosY: 4
   wordText: {fileID: 1735942520}
   turnText: {fileID: 1200536078}

@@ -43,19 +43,21 @@ public class TileSpriteController : MonoBehaviour {
 	
 	void TileStateChanged (Tile t) {
 		if (t.tileState == TileState.Selected) {
-			//set the sprite to be selected
 			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = Color.grey;
 		}
 		else if (t.tileState == TileState.Neutral) {
-			//set the sprite to be selected
 			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = Color.white;
 			tileUITextmap[t].text = t.letter.ToString();
 
 		}
 		else if (t.tileState == TileState.Taken) {
-			//set the sprite to be selected
 			tileUITextmap[t].text = t.letter.ToString();
 			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = t.team.color;
+		}
+
+		else if (t.tileState == TileState.Endangered) {
+			tileUITextmap[t].text = t.letter.ToString();
+			tileGameObjectMap[t].GetComponent<SpriteRenderer>().color = t.team.endangerColor;
 		}
 	}
 

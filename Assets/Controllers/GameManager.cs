@@ -131,7 +131,6 @@ public class GameManager : MonoBehaviour {
 	void TakeTilesInWord (List<Tile> tiles) {
 		bool recurse = false;
 		List<Tile> takenTiles = new List<Tile> ();;
-		print ("working");
 
 		foreach (Tile t in tiles) {
 			if (t.IsTouchingTileOfTeam(Grid.Instance.currTeam)) {
@@ -142,7 +141,6 @@ public class GameManager : MonoBehaviour {
 
 		foreach (Tile t in takenTiles) {
 
-			print ("touching");
 			t.team = Grid.Instance.currTeam;
 			t.SetTileState(TileState.Taken);
 			tiles.Remove(t);
